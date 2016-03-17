@@ -1,0 +1,18 @@
+<ng-include src="'partials/_header_login.html'"></ng-include>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-offset-4 col-md-4 col-lg-offset-4 col-lg-4">
+        <form class="login" ng-submit="login(server, username, password)">
+            <input type="text" ng-model="server" placeholder="Server" />
+            <br/>
+            <br/>
+            <input type="text" ng-model="username" placeholder="Username" />
+            <br/>
+            <br/>
+            <input type="password" ng-model="password" placeholder="Password" />
+            <br/>
+            <br/>
+            <input type="submit" value="Login"/>
+        </form>
+    </div>
+</div>
