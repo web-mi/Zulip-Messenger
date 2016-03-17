@@ -25,9 +25,9 @@ Installation
 ------------
 
 #### Get it from the Store
-[Google Play Store](https://play.google.com/store/apps/details?id=com.webmi.zulip)
-[iOS](https://itunes.apple.com/de/genre/ios/id36?mt=8) (Verfication in progress. Available when its done)
-[Windows Store](https://www.microsoft.com/de-de/store/apps/zulip-messenger/9nblggh4r7tj)
+- [Google Play Store](https://play.google.com/store/apps/details?id=com.webmi.zulip)
+- [iOS](https://itunes.apple.com/de/genre/ios/id36?mt=8) (Verfication in progress. Available when its done)
+- [Windows Store](https://www.microsoft.com/de-de/store/apps/zulip-messenger/9nblggh4r7tj)
 
 #### Build it on your own
 
@@ -37,11 +37,12 @@ You could compile this application by your own.
 
 Clone this project
 ```
-git clone https://github.com/web-mi/zulip.git zulip
+git clone https://github.com/web-mi/Zulip-Messenger.git
 ```
 
 ##### PhoneGap Build
 Zip the www directory inside the projects root.
+
 Upload the zip file to your phonegap build account.
 
 ><i class="icon-info"></i> You could fork this repository too and add the github url to your phonegap build account.
@@ -51,7 +52,7 @@ Please follow [this](http://phonegap.com/getstarted/) guide to find how to build
 
 See also:
 -------------
-[ToDo's](TODOS.MD)
-[Push Android](PUSH_ANDROID.MD)
-[Push iOS](PUSH_IOS.MD)
-[Push WinPhone](PUSH_WINPHONE.MD)
+- [ToDo's](TODOS.MD)
+- [Push Android](PUSH_ANDROID.MD)
+- [Push iOS](PUSH_IOS.MD)
+- [Push WinPhone](PUSH_WINPHONE.MD)
