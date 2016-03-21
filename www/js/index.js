@@ -36,7 +36,11 @@ var app = {
         //app.receivedEvent('deviceready');
         angular.bootstrap(document, ['zulipApp']);
         
-        window.localStorage.setItem("ZULIP_DEVICE", device.platform);
+        if (typeof device != 'undefined') {
+            window.localStorage.setItem("ZULIP_DEVICE", device.platform);
+        } else {
+            window.localStorage.setItem("ZULIP_DEVICE", null);
+        }
         
         var sender_id = window.localStorage.getItem("ZULIP_GCM_SENDER_ID");
         if (sender_id != 'undefined' && sender_id != null) {
