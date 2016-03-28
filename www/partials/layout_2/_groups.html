@@ -1,0 +1,19 @@
+<div class="groups">
+  <div class="title">
+    Group PMs
+  </div>
+  <div class="content">
+    <ul>
+      <li class="group" ng-repeat="group in groups">
+        <a ui-sref="main.narrow({ type: 'pm-with', name: group.emails })" ng-click="hideLHCaRHC()">
+          <img ng-src="{{user_images[user.email]}}" ng-repeat="user in group.users" 
+              tooltip-placement="top" uib-tooltip="{{user.name}}"
+              alt="{{user.initials}}" style="width: 25px;"/>
+          <!--
+          <span>{{ group.names }}</span>
+          -->
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

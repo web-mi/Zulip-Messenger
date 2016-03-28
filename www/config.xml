@@ -85,11 +85,18 @@
     
     <platform name="winphone">
     </platform>
+    <!--
+    <preference name="windows-target-version" value="10.0" />
+    -->
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    
+    <!--
+    <gap:config-file platform="ios" parent="UIViewControllerBasedStatusBarAppearance" overwrite="true">
+        <false/>
+    </gap:config-file>
+    -->
     <allow-navigation href="*" />
     <plugin name="cordova-plugin-whitelist" />
     <plugin name="cordova-plugin-device" />

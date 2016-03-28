@@ -184,13 +184,25 @@ zulip
         if (message.type === 'private') {
           if (message.display_recipient.length > 2) {
             var recipient_emails = [];
-            var recipient_names = [];
+            var recipient_users = [];
             for (var r in message.display_recipient) {
               recipient_emails.push(message.display_recipient[r].email);
-              recipient_names.push(message.display_recipient[r].full_name);
+              
+              var initials = "";
+              var names = message.display_recipient[r].full_name;
+              names = names.split(" ");
+              for(var n in names) {
+                  initials = initials + names[n].substring(0,1);
+              }
+              
+              recipient_users.push({
+                  'initials': initials,
+                  'name': message.display_recipient[r].full_name,
+                  'email': message.display_recipient[r].email
+              });
             }
+            recipient_users = recipient_users;
             recipient_emails = recipient_emails.join();
-            recipient_names = recipient_names.join();
 
             var old_timestamp = null;
             for(var mg in messageGroups) {
@@ -203,7 +215,7 @@ zulip
               delete messageGroups[old_timestamp];
               messageGroups[message.timestamp] = {
                 emails: recipient_emails,
-                names: recipient_names
+                users: recipient_users
               };
             }
           }
@@ -247,7 +259,11 @@ zulip
         'home': 0,
         'private': 0,
         'mentioned': 0,
-        'starred': 0
+        'starred': 0,
+        
+        'top_streams': 0,
+        'top_users': 0,
+        'top_groups': 0
       };
       
       for(var m in services.global_messages) {
@@ -272,7 +288,14 @@ zulip
           }
           
           if (message.type == 'stream') {
+            streamUnreads['top_streams'] = (streamUnreads['top_streams'] + 1);
             streamUnreads[stream_name] = (streamUnreads[stream_name] + 1);
+          } else {
+            if (message.display_recipient.length <= 2) {
+              streamUnreads['top_users'] = (streamUnreads['top_users'] + 1);
+            } else {
+              streamUnreads['top_groups'] = (streamUnreads['top_groups'] + 1);
+            }
           }
         }
       }

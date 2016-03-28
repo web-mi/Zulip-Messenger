@@ -3,7 +3,7 @@
 angular
   .module('zulipApp', [
     'ngAnimate', 
-    'ngRoute',
+    //'ngRoute',
     'ngResource',
     
     'zulipControllers',
@@ -17,7 +17,8 @@ angular
     'angular-toArrayFilter',
     'ui.router',
     'luegg.directives',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ngMaterial'
     ])
 
   .run([
@@ -27,50 +28,70 @@ angular
     function($window, $rootScope, Users) {
       $window.addEventListener('beforeunload', function() {
         var auth_token = window.localStorage.getItem("ZULIP_AUTH_TOKEN");
-        if (auth_token != 'undefined' && auth_toke != null) {
+        if (auth_token != 'undefined' && auth_token != null) {
           //TODO Maybe set idle on mobile devices? 
           Users.focus_ping('offline');
         }
       });
+      
+      $rootScope.$on('$stateChangeStart', 
+        function(event, toState, toParams, fromState, fromParams, options){
+          //var templateUrl = toState.templateUrl;
+          //templateUrl = templateUrl.replace('partials/', 'partials/layout_1/'); 
+          //console.log(templateUrl);
+          //toState.templateUrl = templateUrl;
+        }
+      );
+      
     }
   ])
 
-  .config(['$routeProvider', '$httpProvider', '$urlRouterProvider', '$stateProvider', 
-  function($routeProvider, $httpProvider, $urlRouterProvider, $stateProvider) {
+  .config(['$httpProvider', '$urlRouterProvider', '$stateProvider', 
+  function($httpProvider, $urlRouterProvider, $stateProvider) {
 
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     
     // For any unmatched url, redirect to /state1
-    $urlRouterProvider.otherwise("/");
+    $urlRouterProvider.otherwise("/home");
     // Now set up the states
     $stateProvider
       .state('login', {
         url: "/login",
-        templateUrl: "partials/login.html",
+        templateUrl: "partials/layout_3/login.html",
         controller: 'LoginCtrl'
+      })
+      .state('home', {
+        url: "/home",
+        templateUrl: function ($stateParams){
+            return "partials/layout_3/home.html"
+        },
+        controller: 'MainCtrl',
+        resolve: { authenticate: authenticate }
       })
       .state('main', {
         url: "/",
-        templateUrl: "partials/main.html",
+        templateUrl: function ($stateParams){
+            return "partials/layout_3/main.html"
+        },
         controller: 'MainCtrl',
         resolve: { authenticate: authenticate }
       })
       .state('main.narrow', {
         url: "narrow/:type/:name",
-        templateUrl: "partials/main.html",
+        templateUrl: "partials/layout_3/main.html",
         controller: 'MainCtrl',
         resolve: { authenticate: authenticate }
       })
       .state('main.narrow.topic', {
         url: "/topic/:topic",
-        templateUrl: "partials/main.html",
+        templateUrl: "partials/layout_3/main.html",
         controller: 'MainCtrl',
         resolve: { authenticate: authenticate }
       })
       .state('settings', {
         url: "/settings",
-        templateUrl: "partials/settings.html",
+        templateUrl: "partials/layout_3/settings.html",
         controller: 'SettingsCtrl',
         resolve: { authenticate: authenticate }
       })

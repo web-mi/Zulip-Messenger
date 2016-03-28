@@ -11,16 +11,12 @@ img {
   width: 100%;
 }
 
-.main_container {
-  position: relative;
-}
 .message_field {
-  text-align: center;
-  position: fixed;
+  position: absolute;
   bottom: 0;
-  width: 42%;
-  margin-left: -25%;
-  left: 53%;
+  left: 0;
+  text-align: center;
+  width: 100%;
   border: 1px solid #ccc;
   background: #fff;
   padding: 10px;
@@ -39,7 +35,7 @@ img {
 .stream_message .stream,
 .stream_message .topic,
 .private_message .recipient {
-  width: 200px;
+  width: 49%; 
   display: initial;
 }
 
@@ -88,6 +84,7 @@ img {
   margin: 0;
   border: 0px;
 }
+
 html,
 body, 
 body .container-fluid,
@@ -97,7 +94,7 @@ body .container-fluid .content-container > div {
 }
 
 form.login {
-  margin-top: 15%;
+  margin-top: 20%;
   padding: 5%;
   background: #ccc;  
   
@@ -118,12 +115,26 @@ form.login input {
 .search-btn {
   display: none;
 }
+
+.messages {
+  position: relative;
+  padding: 0 15px;
+}
+
 .content-container .lhc,
 .content-container .rhc,
+.messages,
 .main_container {
   height: 100%;
+}
+.content-container .lhc,
+.content-container .rhc,
+.messages {
   overflow-y: scroll;
-  padding-bottom: 100px;
+}
+.main_container {
+  padding: 0;
+  padding-bottom: 65px;
 }
 
 @media(max-width:991px) {
@@ -170,9 +181,16 @@ form.login input {
     color: #fff;
   }
   .message_field {
-    width: 100%;
-    left: 0;
-    margin: 0;
+    padding: 0;
+  }
+  .message_field button.btn_stream {
+      float: left;
+  }
+  .message_field button.btn_private {
+      float: right;
+  }
+  .message_field button span.desc {
+    display: none;
   }
 }
 @media(min-width:992px) {
@@ -319,7 +337,7 @@ form.login input {
   margin-left: -6px;
 }
 
-.message .highlighted {
+.message_content .highlighted {
   background: #afa;
 }
 
@@ -385,52 +403,39 @@ form.login input {
   margin-left: 5.8em;
 }
 
-.message .message_actions .unstarred,
-.message .message_actions .starred,
-.message_time,
+.message_content .message_actions .unstarred,
+.message_content .message_actions .starred,
+.time,
 .conversation_date div {
   color: #aaa;
   font-size: 12px;
-  line-height: 14px;
-}
-.message .message_actions .unstarred,
-.message .message_actions .starred {
-  cursor: pointer;
-  font-size: 14px;
-}
-.message {
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-}
-.message.first {
-  border-top: 1px solid #ccc;
-}
-.message.last {
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 5px;
-}
-.message .message_actions,
-.message .message_time {
-  width: 50%;
-  float: left;
-}
-.message .message_time {
-  text-align: right;
-  padding: 5px;
-  font-size: 10px;
   line-height: 12px;
-  float: right;
 }
-.message .message_time:after {
-  content: '';
-  display: block;
-  clear: both;
+.message_content .message_actions .unstarred,
+.message_content .message_actions .starred {
+  cursor: pointer;
 }
-.message .message_actions .unstarred {
+.message_content .message_actions,
+.message_content .time {
+  height: 12px;
+  text-align: right;
+}
+.message_content .message_actions .unstarred {
   display: none;
 }
 .message:hover .message_actions .unstarred {
   display: inline;
+}
+.message_content {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+.message_content.first {
+  border-top: 1px solid #ccc;
+}
+.message_content.last {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 5px;
 }
 .conversation_date {
   margin-bottom: 5px;

@@ -6,12 +6,35 @@ var zulipControllers = angular.module('zulipControllers', []);
 
 zulipControllers
   .controller('MainCtrl', [
-    '$rootScope', '$scope', '$sce', '$routeParams', '$timeout', '$interval', '$stateParams', 
+    '$rootScope', '$scope', '$sce', '$timeout', '$interval', '$stateParams', 
     '$window', '$document', '$state', '$location',
-    'Messages', 'Users', 'RestApi', 'Events',
-    function($rootScope, $scope, $sce, $routeParams, $timeout, $interval, $stateParams, 
+    'Messages', 'Users', 'RestApi', 'Events', 'ZulipLogin',
+    function($rootScope, $scope, $sce, $timeout, $interval, $stateParams, 
       $window, $document, $state, $location,
-      Messages, Users, RestApi, Events){
+      Messages, Users, RestApi, Events, ZulipLogin){
+      
+      $scope.logout = function() {
+        ZulipLogin.doLogout();
+      };
+      $scope.showOverlay = function(id) {
+        $('#' + id).modal('show');
+      };
+      
+      var server = window.localStorage.getItem("ZULIP_SERVER");
+      
+      $scope.user_images = {};
+      RestApi.Users.get({}, function(response){
+          for(var u in response.members) {
+              var user = response.members[u];
+              var avatar = user.avatar_url;
+              if (avatar.indexOf('http') < 0) {
+                  $scope.user_images[user.email] = server + user.avatar_url;
+              } else {
+                  $scope.user_images[user.email] = user.avatar_url;
+              }
+              
+          }
+      });
       
       $scope.search = function(name) {
         $location.url('/narrow/search/'+name);
@@ -49,15 +72,15 @@ zulipControllers
       };
     
  
-    $rootScope.menuVisible = false;
+    $scope.menuVisible = false;
     $rootScope.showLHC = function() {
-      $rootScope.menuVisible = $rootScope.menuVisible === 'lhc' ? false : 'lhc';
+      $scope.menuVisible = $scope.menuVisible === 'lhc' ? false : 'lhc';
     };
     $rootScope.showRHC = function() {
-      $rootScope.menuVisible = $rootScope.menuVisible === 'rhc' ? false : 'rhc';
+      $scope.menuVisible = $scope.menuVisible === 'rhc' ? false : 'rhc';
     };
     $rootScope.hideLHCaRHC = function() {
-      $rootScope.menuVisible = false;
+      $scope.menuVisible = false;
     };
     
     $scope.me = window.localStorage.getItem("ZULIP_EMAIL");
@@ -145,7 +168,7 @@ zulipControllers
       // Start loading messages. It will throw a callback messagesLoaded
       $scope.$on('messagesLoaded', function(ev, response) {
         $scope.messages = Messages.get();
-        
+        //console.log(Messages.get());
         //Load last n messages to process groups, topics, unread, etc
         Messages.load(true, {});
       });
@@ -154,6 +177,12 @@ zulipControllers
       var messages_type = $state.params.type;
       var messages_name = $state.params.name;
       var messages_topic = $state.params.topic;
+      
+      $scope.routeParams = $state.params;
+      
+      //Set default view on first load and show streams
+      $scope.menuVisible = 'streams'; 
+      $scope.message_field_to_show = false;
    
       $scope.openNewMessage = function(type, name, topic) {
         if (type == 'private') {
@@ -169,14 +198,40 @@ zulipControllers
       //Load last n messages filtered by narrow to show messages
       Messages.load(false, {type: messages_type, name: messages_name, topic: messages_topic});
       
+      //Set default values if im currently in a pm or a stream narrow
+      if (messages_type == 'pm-with') {
+          $scope.private_recipient = messages_name+",";
+      } else if (messages_type == 'stream') {
+          $scope.stream_recipient = messages_name;
+          $scope.topic_recipient = messages_topic;
+      }
+       
       //On route change reload the messages with the narrow set
       $rootScope.$on('$stateChangeSuccess', 
         function(event, toState, toParams, fromState, fromParams){
+          //Reset new conversation recipients
+          $scope.new_private_recipient = "";
+          $scope.search_term = ""; 
+          $('#private_message').modal('hide');
+          $('#stream_message').modal('hide');
+          $('#search_message').modal('hide');
           
+          $scope.routeParams = toParams;
+          $scope.message_field_to_show = false;
+            
           //Reload the messages on route change
           var messages_type = toParams.type;
           var messages_name = toParams.name;
           var messages_topic = toParams.topic;
+          
+          //Set default values if im currently in a pm or a stream narrow
+          if (messages_type == 'pm-with') {
+              $scope.private_recipient = messages_name+",";
+          } else if (messages_type == 'stream') {
+              $scope.stream_recipient = messages_name;
+              $scope.topic_recipient = messages_topic;
+          }
+          
           //Set to empty array to show empty space while loading
           $scope.messages = [];
           Messages.clear();
@@ -245,11 +300,33 @@ zulipControllers
         $scope.other_private_recipients = [];
       }
     });
+    /* Watch for new conversation user input */
+    $scope.new_pm = {};
+    $scope.$watch('new_pm.p_recipient', function() {
+      var recipients = [];
+      if (typeof $scope.new_pm.private_recipient != 'undefined') {
+        recipients = $scope.new_pm.private_recipient.split(',');
+      }
+      if (recipients.length > 0) {
+        $scope.new_pm.last_private_recipient = recipients[recipients.length - 1].trim();
+        recipients = recipients.slice(0, (recipients.length - 1));
+        $scope.new_pm.other_private_recipient = recipients.join();
+        $scope.new_pm.other_private_recipients = recipients;
+      } else {
+        $scope.new_pm.last_private_recipient = "";
+        $scope.new_pm.other_private_recipient = "";
+        $scope.new_pm.other_private_recipients = [];
+      } 
+    });
     
   }])
   .controller('SettingsCtrl', [
-    '$scope', '$location', '$httpParamSerializerJQLike', 'Events', 'RestApi', 'JsonApi',
-    function($scope, $location, $httpParamSerializerJQLike, Events, RestApi, JsonApi){
+    '$scope', '$location', '$httpParamSerializerJQLike', 'Events', 'RestApi', 'JsonApi', 'ZulipLogin',
+    function($scope, $location, $httpParamSerializerJQLike, Events, RestApi, JsonApi, ZulipLogin){
+      
+      $scope.logout = function() {
+        ZulipLogin.doLogout();
+      };
       
       var email = window.localStorage.getItem("ZULIP_EMAIL");
       
@@ -349,13 +426,20 @@ zulipControllers
     }
   ])
   
-  .controller('LoginCtrl', ['$scope', 'ZulipLogin',
-    function($scope, ZulipLogin){
+  .controller('LoginCtrl', ['$scope', '$timeout', '$location', 'ZulipLogin',
+    function($scope, $timeout, $location, ZulipLogin){
       $scope.login = function(server, username, password) {
-        ZulipLogin.doLogin(server, username, password);
-      };
-      $scope.logout = function() {
-        ZulipLogin.doLogout();
+        var response = ZulipLogin.doLogin(server, username, password);
+        response.then(function(p){
+          if (p === true) {
+            $location.url('/home');
+          } else {
+            $scope.error = p.msg;
+            $timeout(function(){
+              $scope.error = null;
+            }, 2000);
+          }
+        });
       };
     }]
   )

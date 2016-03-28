@@ -8,7 +8,7 @@
     ng-class="{ 'active': presences[user.email] == 'active', 
                 'idle': presences[user.email] == 'idle', 
                 'offline': presences[user.email] == 'offline' }">
-      <a ui-sref="main.narrow({ type: 'pm-with', name: user.email })">
+      <a ui-sref="main.narrow({ type: 'pm-with', name: user.email })" ng-click="hideLHCaRHC()">
         <span>{{ user.full_name }}</span>
       </a>
     </li>

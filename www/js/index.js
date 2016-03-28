@@ -41,7 +41,7 @@ var app = {
         } else {
             window.localStorage.setItem("ZULIP_DEVICE", null);
         }
-        
+        /*
         var sender_id = window.localStorage.getItem("ZULIP_GCM_SENDER_ID");
         if (sender_id != 'undefined' && sender_id != null) {
            var push = PushNotification.init({
@@ -77,6 +77,7 @@ var app = {
                 console.log(e.message);
             });
         }
+        */
     },
     
     // Update DOM on a Received Event

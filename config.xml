@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.webmi.zulip" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Zulip Messenger</name>
+    <description>
+        Phonegap and AngularJS Messenger Client for Zulip
+    </description>
+    <author email="itzenthaler@web-mi.de" href="http://www.web-mi.de">
+        Marc Itzenthaler
+    </author>
+    <content src="index.html" />
+    <preference name="permissions" value="none" />
+    <preference name="orientation" value="default" />
+    <preference name="target-device" value="universal" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="stay-in-webview" value="false" />
+    <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="true" />
+    <preference name="disable-cursor" value="false" />
+    <preference name="android-minSdkVersion" value="14" />
+    <preference name="android-installLocation" value="auto" />
+    <preference name="android-build-tool" value="gradle" />
+
+    <icon src="icon.png" />
+    <icon gap:platform="android" gap:qualifier="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
+    <icon gap:platform="android" gap:qualifier="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
+    <icon gap:platform="android" gap:qualifier="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
+    <icon gap:platform="android" gap:qualifier="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
+    <icon gap:platform="blackberry" src="www/res/icon/blackberry/icon-80.png" />
+    <icon gap:platform="blackberry" gap:state="hover" src="www/res/icon/blackberry/icon-80.png" />
+    
+    <!-- iPhone 6 / 6+ -->
+    <icon src="www/res/icon/ios/icon-60-3x.png" platform="ios" width="180" height="180" />
+    <!-- iPhone / iPod Touch  -->
+    <icon src="www/res/icon/ios/icon-60.png" platform="ios" width="60" height="60" />
+    <icon src="www/res/icon/ios/icon-60-2x.png" platform="ios" width="120" height="120" />
+    <!-- iPad -->
+    <icon src="www/res/icon/ios/icon-76.png" platform="ios" width="76" height="76" />
+    <icon src="www/res/icon/ios/icon-76-2x.png" platform="ios" width="152" height="152" />
+    <!-- Settings Icon --> <!-- iPhone Spotlight and Settings Icon -->
+    <icon src="www/res/icon/ios/icon-29.png" platform="ios" width="29" height="29" />
+    <icon src="www/res/icon/ios/icon-29-2x.png" platform="ios" width="58" height="58" />
+    <!-- Spotlight Icon -->
+    <icon src="www/res/icon/ios/icon-40.png" platform="ios" width="40" height="40" />
+    <icon src="www/res/icon/ios/icon-40-2x.png" platform="ios" width="80" height="80" />
+    <!-- iPhone / iPod Touch -->
+    <icon src="www/res/icon/ios/icon-57.png" platform="ios" width="57" height="57" />
+    <icon src="www/res/icon/ios/icon-57-2x.png" platform="ios" width="114" height="114" />
+    <!-- iPad -->
+    <icon src="www/res/icon/ios/icon-72.png" platform="ios" width="72" height="72" />
+    <icon src="www/res/icon/ios/icon-72-2x.png" platform="ios" width="144" height="144" />
+    <!-- iPad Spotlight and Settings Icon -->
+    <icon src="www/res/icon/ios/icon-50.png" platform="ios" width="50" height="50" />
+    <icon src="www/res/icon/ios/icon-50-2x.png" platform="ios" width="100" height="100" />
+    
+    <icon gap:platform="webos" src="www/res/icon/webos/icon-64.png" />
+    <icon gap:platform="winphone" src="www/res/icon/windows-phone/icon-48.png" />
+    <icon gap:platform="winphone" gap:role="background" src="www/res/icon/windows-phone/icon-173-tile.png" />
+    <gap:splash gap:platform="android" gap:qualifier="port-ldpi" src="www/res/screen/android/screen-ldpi-portrait.png" />
+    <gap:splash gap:platform="android" gap:qualifier="port-mdpi" src="www/res/screen/android/screen-mdpi-portrait.png" />
+    <gap:splash gap:platform="android" gap:qualifier="port-hdpi" src="www/res/screen/android/screen-hdpi-portrait.png" />
+    <gap:splash gap:platform="android" gap:qualifier="port-xhdpi" src="www/res/screen/android/screen-xhdpi-portrait.png" />
+    <gap:splash gap:platform="blackberry" src="www/res/screen/blackberry/screen-225.png" />
+    <gap:splash gap:platform="ios" height="480" src="www/res/screen/ios/screen-iphone-portrait.png" width="320" />
+    <gap:splash gap:platform="ios" height="960" src="www/res/screen/ios/screen-iphone-portrait-2x.png" width="640" />
+    <gap:splash gap:platform="ios" height="1136" src="www/res/screen/ios/screen-iphone-portrait-568h-2x.png" width="640" />
+    <gap:splash gap:platform="ios" height="1024" src="www/res/screen/ios/screen-ipad-portrait.png" width="768" />
+    <gap:splash gap:platform="ios" height="768" src="www/res/screen/ios/screen-ipad-landscape.png" width="1024" />
+    <gap:splash gap:platform="winphone" src="www/res/screen/windows-phone/screen-portrait.jpg" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    
+    <platform name="winphone">
+    </platform>
+    <!--
+    <preference name="windows-target-version" value="10.0" />
+    -->
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    
+    <allow-navigation href="*" />
+    <plugin name="cordova-plugin-whitelist" />
+    <plugin name="cordova-plugin-device" />
+    <plugin name="phonegap-plugin-push">
+        <param name="SENDER_ID" value="xxxxxxxxx" />
+    </plugin>
+    
+    
+    
+</widget>

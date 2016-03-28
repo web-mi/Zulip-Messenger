@@ -1,0 +1,27 @@
+<!-- Header greater xs -->
+<div class="header row hidden-sm hidden-xs visible-md visible-lg">
+  <div class="col-md-2 lhc">
+    <a ui-sref="main()">
+      <img class="logo" src="/img/zulipcornerlogo@2x.png"/>
+    </a>
+  </div>
+  <div class="col-md-8 main">
+      <span class="glyphicon glyphicon-home home-icon"></span>
+      <span class="glyphicon glyphicon-search search-icon"></span>
+      <form ng-submit="search(searchTerm)" class="search-form">
+          <input type="text" class="search-field" ng-model="searchTerm" placeholder="Search"/>
+          <input type="submit" class="search-btn" />
+      </form>
+  </div>
+  <div class="col-md-2 rhc" ng-controller="LoginCtrl">
+      <a ui-sref="settings()">
+        <span class="glyphicon glyphicon-cog"></span>
+      </a>
+      <a href="#" ng-click="logout()">
+          <span class="glyphicon glyphicon-off"></span>
+      </a>
+  </div>
+</div>
+
+
+

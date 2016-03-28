@@ -5,11 +5,43 @@
 var zulipLogin = angular.module('zulipLogin', []);
 
 zulipLogin
-  .factory('ZulipLogin', ['$http', '$location', 'Base64', 'Users',
-    function($http, $location, Base64, Users) {
+  .directive('onLongPress', function($timeout) {
+    return {
+      restrict: 'A',
+      link: function($scope, $elm, $attrs) {
+        $elm.bind('touchmove', function(evt) {
+          $scope.move = true;
+        });
+        
+        $elm.bind('touchstart', function(evt) {
+          $scope.longPress = true;
+          $timeout(function() {
+            if ($scope.longPress && $scope.move != true) {
+              $scope.$apply(function() {
+                $scope.$eval($attrs.onLongPress)
+              });
+            }
+          }, 600);
+        });
+
+        $elm.bind('touchend', function(evt) {
+          $scope.longPress = false;
+          if ($attrs.onTouchEnd) {
+            $scope.$apply(function() {
+              $scope.$eval($attrs.onTouchEnd)
+            });
+          }
+        });
+      }
+    };
+  })
+
+  .factory('ZulipLogin', ['$http', 'Base64', 'Users',
+    function($http, Base64, Users) {
       
       return {
         doLogin: function(server, username, password) {
+          
           if (server.indexOf('https://') < 0) {
             server = "https://"+server;
           }
@@ -18,6 +50,11 @@ zulipLogin
             responseType: "json",
             url: server + '/api/v1/fetch_api_key?username=' + username + '&password=' + password
           }).then(function successCallback(response) {
+
+            if (response.data == null) {
+              return {'msg': 'Server error!', 'reason': 'wrong_server', 'result': 'error'};
+            }
+            
             var auth_token = Base64.encode(username + ':' + response.data.api_key);
             
             window.localStorage.setItem("ZULIP_SERVER", server);
@@ -29,10 +66,9 @@ zulipLogin
               window.localStorage.setItem("ZULIP_EMAIL", username);
             }
             
-            $location.url('/');
             return true;
           }, function errorCallback(response) {
-            return false;
+            return response.data;
           });
         },
         

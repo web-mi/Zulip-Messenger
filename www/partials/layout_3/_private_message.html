@@ -1,0 +1,59 @@
+<!-- Modal for new private conversation -->
+<div id="private_message" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="New private message">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">New private message</h4>
+      </div>
+      
+      <div class="modal-body">
+        <div uib-dropdown keyboard-nav auto-close="outsideClick">
+          <input type="text"
+            ng-model="new_pm.p_recipient"
+            class="form-control recipient"
+            autocomplete="off"
+            placeholder="Recipient"
+            uib-dropdown-toggle />
+          <input type="hidden"  
+            ng-model="new_pm.private_recipient" 
+            class="form-control recipient" 
+            id="new_private_recipient"
+            autocomplete="off" />
+          <ul uib-dropdown-menu 
+              ng-show="(zulipData.realm_users | filter:{email: '!'+me} | filter:new_pm.p_recipient).length > 0 && new_pm.p_recipient.length > 0">
+            <li ng-repeat="user in zulipData.realm_users | filter:{email: '!'+me} | filter:new_pm.p_recipient | limitTo: 5"
+              ng-show="new_pm.other_private_recipient.indexOf(user.email) == -1">
+              <a ng-click="new_pm.private_recipient = (new_pm.other_private_recipient == '' ? user.email + ',' : new_pm.other_private_recipient + ',' + user.email + ','); focusInput('p_recipient'); new_pm.p_recipient = '';">
+                <img ng-src="{{ user_images[user.email] }}"
+                  tooltip-placement="top" uib-tooltip="{{user.name}}"
+                  class="icon"
+                  alt=""/>
+                <span>{{ user.full_name }} <{{ user.email }}></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="p_recipients">
+          <div class="p_recipient" 
+              ng-repeat="opr in new_pm.other_private_recipients"
+              ng-init="u = (zulipData.realm_users | filter:{email: opr})">
+              
+            <img ng-src="{{ user_images[opr] }}" class="icon"/>
+            <span>{{ u[0].full_name }} <{{ u[0].email }}></span>
+            <span class="remove_recipient glyphicon glyphicon-remove" ng-click="new_pm.private_recipient = new_pm.private_recipient.substr(0, new_pm.private_recipient.indexOf(opr))+new_pm.private_recipient.substr((opr.length + 1))"></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="$parent.new_private_recipient = '';" data-dismiss="modal">Cancel</button>
+        <a class="btn btn-primary"
+          ui-sref="main.narrow({ type: 'pm-with', name: new_other_private_recipient})"
+        >Next</a>
+      </div>
+      
+    </div>
+  </div>
+</div>

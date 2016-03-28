@@ -1,0 +1,188 @@
+<div class="main_container" ng-init="(lastRecipientString = '')">
+    <!-- Messages -->
+  <div class="messages" scroll-glue>
+    <div class="message" 
+                ng-repeat="message in messages track by $index"
+                ng-init="
+                (lastRecipientString = (messages[$index - 1].type == 'stream' ? messages[$index - 1].display_recipient+'-'+messages[$index - 1].subject : messages[$index - 1].recipient_mails));
+                (currentRecipientString = (message.type == 'stream' ? message.display_recipient+'-'+message.subject : message.recipient_mails));
+                (nextRecipientString = (messages[$index + 1].type == 'stream' ? messages[$index + 1].display_recipient+'-'+messages[$index + 1].subject : messages[$index + 1].recipient_mails));
+                conversationStarted = (currentRecipientString != lastRecipientString ? true : false);
+                conversationEnded = (currentRecipientString != nextRecipientString ? true : false);
+                lastConversationDate = (messages[$index - 1].timestamp * 1000 | date : 'yyyyMMdd');
+                currConversationDate = (message.timestamp * 1000 | date : 'yyyyMMdd');
+                nextConversationDate = (messages[$index + 1].timestamp * 1000 | date : 'yyyyMMdd');
+                "
+                >
+            
+      <div class="conversation_date row" ng-show="lastConversationDate != currConversationDate">
+        <div class="col-xs-4 col-sm-4 col-md-5 col-lg-5">
+          <hr/>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+          {{message.timestamp * 1000 | date : 'd MMM'}}
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-5 col-lg-5">
+            <hr/>
+        </div>
+      </div>
+      
+      
+      
+      <div class="message_content"
+          ng-click="openNewMessage(message.type, (message.recipient_mails ? message.recipient_mails : message.display_recipient), message.subject)"
+          ng-class="(conversationStarted || lastConversationDate != currConversationDate ? 'first' : ''); (conversationEnded || nextConversationDate != currConversationDate ? 'last' : '');"
+          >
+          
+        <div class="recipients" ng-if="(conversationStarted) || lastConversationDate != currConversationDate">
+          <div ng-if="message.type == 'stream'" 
+               ng-init="streamData = (zulipData.subscriptions | filter: {name: message.display_recipient})">
+            <a class="stream"
+               ui-sref="main.narrow({ type: 'stream', name: message.display_recipient })">
+              <span>
+                <span class="dot" ng-style="{'background': streamData[0].color}"></span> {{ message.display_recipient }}
+              </span>
+            </a>
+            &nbsp;>&nbsp;
+            <a class="topic" 
+                ui-sref="main.narrow.topic({ type: 'stream', name: message.display_recipient, topic: message.subject })">
+              <span>
+                {{ message.subject }}
+              </span>
+            </a>
+          </div>
+              
+          <div ng-if="message.type == 'private'">
+            <a class="user" ui-sref="main.narrow({ type: 'pm-with', name: message.recipient_mails})" ng-repeat="recipient in message.display_recipient track by $index">
+              <span>
+                {{ recipient.full_name }}
+              </span>
+            </a>
+          </div>
+        </div>
+          
+        <div class="row" on-long-press="showOverlay('overlay_{{message.id}}')">
+            
+          <div id="overlay_{{message.id}}" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+                
+                <div class="button_group">
+                  <button ng-if="(message.flags.indexOf('starred') >= 0)"
+                     class="btn btn-default"
+                     data-dismiss="modal"
+                     ng-click="unstar($index, message.id);">
+                    <span class="starred glyphicon glyphicon-star"></span> unstar
+                  </button>
+                  <button ng-if="(message.flags.indexOf('starred') < 0)"
+                     class="btn btn-default"
+                     data-dismiss="modal" 
+                     ng-click="star($index, message.id);">
+                    <span class="unstarred glyphicon glyphicon-star-empty"></span> star
+                  </button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+            
+          <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+            <img src="{{ message.avatar_url }}" 
+                  ng-show="(message.sender_id != messages[$index - 1].sender_id) || conversationStarted == true || lastConversationDate != currConversationDate" 
+                  class="user_image"
+                  />
+          </div>
+          <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10">
+            <div class="row">
+              <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+                <b ng-show="(message.sender_id != messages[$index - 1].sender_id) || conversationStarted == true || lastConversationDate != currConversationDate">
+                  <span ng-if="(message.flags.indexOf('starred') >= 0)" class="starred glyphicon glyphicon-star"></span>
+                  {{ message.sender_full_name }}
+                </b>
+              </div>
+                      
+              <div class="col-lg-1 col-md-1 col-sm-3 col-xs-3 time">
+                {{message.timestamp * 1000 | date : 'HH:mm'}}
+              </div>
+              
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    ng-bind-html="message.content"></div>
+                      
+            </div>
+          </div>
+                    
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Messages -->      
+</div>
+
+
+<!-- Message Field -->
+<div class="message_field">
+    
+    <!-- Stream Message Field -->
+    <div class="stream_message" ng-show="routeParams.type == 'stream'">
+            
+        <form ng-submit="send_message('stream', stream_recipient, topic_recipient, stream_message)">
+            <div class="recipient_container">
+                <div uib-dropdown keyboard-nav auto-close="outsideClick" class="dropup">
+                    <input type="text" 
+                    ng-model="stream_recipient" 
+                    class="form-control stream" 
+                    id="stream_recipient"
+                    autocomplete="off"
+                    placeholder="Recipient" uib-dropdown-toggle>
+
+                    <ul uib-dropdown-menu >
+                      <li ng-repeat="subscription in zulipData.subscriptions | toArray:false | filter:{name: stream_recipient} | limitTo: 5">
+                        <a href="#" ng-click="$parent.stream_recipient = subscription.name; $parent.show_stream_dd = false; focusInput('stream_recipient');">
+                        {{ subscription.name }}
+                        </a>
+                      </li>
+                    </ul>
+                    
+                    <label>Topic:</label><input type="text" ng-model="topic_recipient" placeholder="(Topic)" class="form-control topic"/>
+                </div>
+            </div>
+            
+            <textarea ng-model="stream_message" class="message form-control"></textarea>
+            <input type="submit" value="Send" class="send form-control"/>
+        </form>
+    </div>
+    
+    
+    <!-- Private Message Field -->
+    <div class="private_message" ng-show="routeParams.type == 'pm-with'">
+    
+      <form ng-submit="send_message('private', private_recipient, null, private_message)">
+          
+        <div class="recipient_container pm_recipient_container">
+          <span class="input-group-addon" >You and</span>
+        
+          <div uib-dropdown keyboard-nav auto-close="outsideClick" class="dropup">
+            <input type="text" 
+            ng-model="private_recipient" 
+            class="form-control recipient" 
+            id="private_recipient"
+            autocomplete="off"
+            placeholder="Recipient" uib-dropdown-toggle />
+            <ul uib-dropdown-menu>
+              <li ng-repeat="user in zulipData.realm_users | filter:{email: '!'+me} | filter:last_private_recipient | limitTo: 5"
+                ng-show="other_private_recipients.indexOf(user.email) == -1">
+                <a href='#' ng-click="$parent.private_recipient = (other_private_recipient == '' ? user.email + ',' : other_private_recipient + ',' + user.email + ','); show_private_dd = false; focusInput('private_recipient');">
+                  {{ user.full_name }} <{{ user.email }}>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+        
+        <textarea ng-model="private_message" class="message form-control"></textarea> 
+        <input type="submit" value="Send" class="send form-control"/>
+      </form>
+    </div>
+</div>  
+<!-- End Message Field -->

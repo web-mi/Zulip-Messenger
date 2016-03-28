@@ -1,0 +1,31 @@
+<!-- Modal for search -->
+<div id="search_message" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="Search">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search</h4>
+      </div>
+      
+      <div class="modal-body">
+        <div>
+            <input type="text" 
+              ng-model="search_term" 
+              class="form-control search" 
+              id="search_term"
+              autocomplete="off"
+              placeholder="Search for ...">
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="$parent.search_term = '';" data-dismiss="modal">Cancel</button>
+        <a class="btn btn-primary"
+          ui-sref="main.narrow({ type: 'search', name: search_term})"
+        >Next</a>
+      </div>
+      
+    </div>
+  </div>
+</div>

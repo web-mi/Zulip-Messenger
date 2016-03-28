@@ -1,0 +1,272 @@
+<div class="header row settings">
+  <div class="col-sm-4 col-xs-4 lhc">
+    <a ui-sref="home()">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+  </div>
+  <div class="col-sm-4 col-xs-4 main">
+    Settings
+  </div>
+  <div class="col-sm-4 col-xs-4 rhc">
+    <a ng-click="showOverlay('stream_message')">
+      <span class="glyphicon glyphicon-bullhorn"></span>
+    </a>
+    <a ng-click="showOverlay('private_message');">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+    
+    <div uib-dropdown class="options">
+      <a href='#'>
+        <span class="glyphicon glyphicon-option-vertical" uib-dropdown-toggle></span>
+      </a>
+      <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+        <li role="menuitem">
+          <a ui-sref="settings()">
+            <span class="glyphicon glyphicon-cog"></span> Settings
+          </a>
+        </li>
+        <li role="menuitem">
+          <a ng-click="logout()">
+            <span class="glyphicon glyphicon-off"></span> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+  </div>
+</div>
+
+
+
+
+<div class="row settings">
+  <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+    
+    <div class="row setting">
+      
+      <!-- Your Account -->
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-user"></span>Your Account (Not editable)
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
+          <form>
+            <label>Full name</label>
+            <br/>
+            <input disabled type="text" name="full_name" ng-model="user.full_name" />
+              
+            <br/>
+            
+            <label>Password</label>
+            <br/>
+            <input disabled type="button" value="Change Password"></input>
+            
+            <br/>
+            
+            <button disabled ng-click="saveUser();">Save changes</button>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+    <div class="row setting">
+      
+      <!-- Display Settings -->
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-time"></span> Display Settings (Not editable)
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
+          <input disabled type="checkbox" ng-checked="zulipData.left_side_userlist"/><label>Display user list on side in narrow windows.</label>
+          <br/>
+          <input disabled type="checkbox" ng-checked="zulipData.twenty_four_hour_time"/><label>Display time in 24-hour format (17:00 instead of 5:00 PM)</label>
+        </div>
+      </div>
+      
+    </div>
+    <div class="row setting">
+      
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-warning-sign"></span> Notifications (Not editable only SenderID for Android Notifications)
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
+          You'll receive notifications when a message arrives and Zulip isn't in focus or the message is offscreen.
+          <br/>
+          
+          <div class="subtitle">
+            Stream messages
+          </div>
+          Unless I say otherwise for a particular stream, I want:
+          <br/>
+          <input disabled type="checkbox"/><label>Desktop notifications</label>
+          <br/>
+          <input disabled type="checkbox"/><label>Audible notifications</label>
+          <br/>
+          Change notification settings for individual streams on your <a>Streams page</a>.
+
+          <div class="subtitle">
+            Private messages and @-mentions
+          </div>
+          
+          I want:
+          <br/>
+          <input disabled type="checkbox"/><label>Desktop notifications</label>
+          <br/>
+          <input disabled type="checkbox"/><label>Audible notifications</label>
+          <br/>
+          <input disabled type="checkbox"/><label>Email notifications when offline</label>
+          <br/>
+          <input disabled type="checkbox"/><label>Mobile push notifications when offline</label>
+          <br/>
+          
+          <label>Sender-ID:</label>
+          <br/>
+          <input type="text" ng-model="sender_id" placeholder="Sender-ID" />
+          
+          
+          <div class="subtitle">
+            Other notifications
+          </div>
+          I want:
+          <br/>
+          <input disabled type="checkbox"/><label>Digest emails when i'm away</label>
+          
+          <br/>
+          <br/>
+          <button ng-click="save()"><span class="glyphicon glyphicon-ok"></span>Save</button>
+        </div>
+      </div>
+      
+    </div>
+    <div class="row setting">
+      
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-pawn"></span> Your Bots  (Avatar upload missing)
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
+          Looking for our <a href="https://zulip.web-mi.de/integrations">Integrations</a> or <a href="https://zulip.web-mi.de/api">API</a> documentation?
+          
+          <div class="jumbotron" ng-repeat="bot in zulipData.realm_bots track by $index">
+            
+            <div class="row" ng-show="$index != bot2edit">
+              <div class="col-md-1">
+                <img src="{{bot.avatar_url}}"/>
+              </div>
+              <div class="col-md-8">
+                {{bot.full_name}}
+                <br/>
+                Username: {{bot.email !== undefined ? bot.email : bot.username}}
+                <br/>
+                API Key: {{bot.api_key}} <span class="glyphicon glyphicon-refresh" ng-click="regenerateKey($index);"></span>
+              </div>
+              <div class="col-md-3">
+                <button><span class="glyphicon glyphicon-pencil" ng-click="bot2edit = $index"></span></button>
+                <button><span class="glyphicon glyphicon-trash" ng-click="removeBot($index);"></span></button>
+              </div>
+            </div>
+            
+            <div class="row" ng-show="$index == bot2edit">
+              <div class="col-md-1">
+                <img src="{{bot.avatar_url}}"/>
+              </div>
+              <div class="col-md-8">
+                <input type="text" ng-model="bot.full_name" />
+                <br/>
+                <!--
+                <input type="file" />
+                <button>Customize avatar</button> (Optional)
+                <br/>
+                -->
+              </div>
+              <div class="col-md-3">
+                <button><span class="glyphicon glyphicon-ok" ng-click="saveBot($index); bot2edit = null;"></span></button>
+                <button><span class="glyphicon glyphicon-remove" ng-click="bot2edit = null;"></span></button>
+              </div>
+            </div>
+          </div>
+        
+          <div class="jumbotron">
+            <form>
+              Add a New Bot
+              <br/>
+              <label>Full name</label>
+              <input type="text" placeholder="Full Bot Name" ng-model="new_bot.full_name" />
+              <br/>
+              <label>Username</label>
+              <input type="text" placeholder="bot_user_name" ng-model="new_bot.email"/>-bot@web-mi.de
+              <br/>
+              <!--
+              <input type="file" />
+              <button>Customize avatar</button> (Optional)
+              <br/>
+              -->
+              <button ng-click="addBot()">Create Bot</button>
+            </form>
+          </div>
+          <hr/>
+          For most bots using the API, you'll want to give each bot its own name and API key using the above section. But if you want to write a bot that can access your own private messages, you should use your personal API key.
+          <br/>
+          <button disabled>Show/change your API key</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="row setting">
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-book"></span> Custom Alert Words
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
+          <div class="alert_words">
+            <span class="label label-default"
+                  ng-repeat="alert_word in zulipData.alert_words">
+                {{alert_word}} <span class="glyphicon glyphicon-trash" ng-click="removeAlertWord(alert_word)"></span>
+              </span>
+          </div>
+          
+          <br/>
+            
+          <input type="text" placeholder="Alert Word" ng-model="new_alert_word"/>
+          <button ng-click="addAlertWord()">Add</button>
+        </div>
+      </div>
+      
+    </div>
+    <div class="row setting">
+      
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-alert"></span>Zulip Labs (Not editable)
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
+          Warning: the below features are experimental features and may not work as well as you would like.
+          <br/>
+          <input disabled type="checkbox"/><label>Always auto-scroll to new messages</label>
+          <br/>
+          <input disabled type="checkbox"/><label>Enable desktop notifications for new streams</label>
+          <br/>
+          <button disabled>Save changes</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<ng-include src="'partials/layout_2/_private_message.html'"></ng-include>
+<ng-include src="'partials/layout_2/_stream_message.html'"></ng-include>

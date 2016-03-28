@@ -1,25 +1,25 @@
 <div class="content">
   <ul>
-    <li ng-class="{expanded: null==active_stream}">
-      <a ui-sref="main">
+    <li class="main_stream" ng-class="{expanded: null==active_stream}">
+      <a ui-sref="main" ng-click="hideLHCaRHC()">
         <span class="glyphicon glyphicon-home"></span>Home
         <span class="badge" ng-show="messagesUnread['home'] > 0">{{ messagesUnread['home'] }}</span>
       </a>
     </li>
-    <li ng-class="{expanded: 'private'==active_stream}">
-      <a ui-sref="main.narrow({ type: 'is', name: 'private' })">
+    <li class="main_stream" ng-class="{expanded: 'private'==active_stream}">
+      <a ui-sref="main.narrow({ type: 'is', name: 'private' })" ng-click="hideLHCaRHC()">
         <span class="glyphicon glyphicon-user"></span>Private messages
         <span class="badge" ng-show="messagesUnread['private'] > 0">{{ messagesUnread['private'] }}</span>
       </a>
     </li>
-    <li ng-class="{expanded: 'starred'==active_stream}">
-      <a ui-sref="main.narrow({ type: 'is', name: 'starred' })">
+    <li class="main_stream" ng-class="{expanded: 'starred'==active_stream}">
+      <a ui-sref="main.narrow({ type: 'is', name: 'starred' })" ng-click="hideLHCaRHC()">
         <span class="glyphicon glyphicon-star"></span>Starred messages
         <span class="badge" ng-show="messagesUnread['starred'] > 0">{{ messagesUnread['starred'] }}</span>
       </a>
     </li>
-    <li ng-class="{expanded: 'mentioned'==active_stream}">
-      <a  ui-sref="main.narrow({ type: 'is', name: 'mentioned' })">
+    <li class="main_stream" ng-class="{expanded: 'mentioned'==active_stream}">
+      <a ui-sref="main.narrow({ type: 'is', name: 'mentioned' })" ng-click="hideLHCaRHC()">
         <span class="glyphicon glyphicon-tags"></span>@-mentions
         <span class="badge" ng-show="messagesUnread['mentioned'] > 0">{{ messagesUnread['mentioned'] }}</span>
       </a>
