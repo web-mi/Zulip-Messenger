@@ -33,16 +33,6 @@ angular
           Users.focus_ping('offline');
         }
       });
-      
-      $rootScope.$on('$stateChangeStart', 
-        function(event, toState, toParams, fromState, fromParams, options){
-          //var templateUrl = toState.templateUrl;
-          //templateUrl = templateUrl.replace('partials/', 'partials/layout_1/'); 
-          //console.log(templateUrl);
-          //toState.templateUrl = templateUrl;
-        }
-      );
-      
     }
   ])
 
@@ -58,13 +48,13 @@ angular
     $stateProvider
       .state('login', {
         url: "/login",
-        templateUrl: "partials/layout_3/login.html",
+        templateUrl: "partials/login.html",
         controller: 'LoginCtrl'
       })
       .state('home', {
         url: "/home",
         templateUrl: function ($stateParams){
-            return "partials/layout_3/home.html"
+            return "partials/home.html"
         },
         controller: 'MainCtrl',
         resolve: { authenticate: authenticate }
@@ -72,26 +62,26 @@ angular
       .state('main', {
         url: "/",
         templateUrl: function ($stateParams){
-            return "partials/layout_3/main.html"
+            return "partials/main.html"
         },
         controller: 'MainCtrl',
         resolve: { authenticate: authenticate }
       })
       .state('main.narrow', {
         url: "narrow/:type/:name",
-        templateUrl: "partials/layout_3/main.html",
+        templateUrl: "partials/main.html",
         controller: 'MainCtrl',
         resolve: { authenticate: authenticate }
       })
       .state('main.narrow.topic', {
         url: "/topic/:topic",
-        templateUrl: "partials/layout_3/main.html",
+        templateUrl: "partials/main.html",
         controller: 'MainCtrl',
         resolve: { authenticate: authenticate }
       })
       .state('settings', {
         url: "/settings",
-        templateUrl: "partials/layout_3/settings.html",
+        templateUrl: "partials/settings.html",
         controller: 'SettingsCtrl',
         resolve: { authenticate: authenticate }
       })

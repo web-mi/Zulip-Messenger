@@ -1,69 +1,117 @@
-<ng-include src="'partials/original/_header_settings.html'"></ng-include>
+<div class="header row main">
+  <div class="col-sm-4 col-xs-4 col-md-1 col-lg-1 lhc">
+    <a ui-sref="home()" class="hidden-md hidden-lg">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <img class="logo hidden-xs hidden-sm" src="img/zulipcornerlogo@2x.png"/>
+  </div>
+  <div class="col-sm-4 col-xs-4 hidden-md hidden-lg main">
+    Settings
+  </div>
+  <div class="col-sm-4 col-xs-4 col-md-2 col-lg-2 rhc">
+    <a ng-click="showOverlay('stream_message')">
+      <span class="glyphicon glyphicon-bullhorn"></span>
+    </a>
+    <a ng-click="showOverlay('private_message');">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+    
+    <div uib-dropdown class="options">
+      <a href='#'>
+        <span class="glyphicon glyphicon-option-vertical" uib-dropdown-toggle></span>
+      </a>
+      <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+        <li role="menuitem">
+          <a ng-click="showOverlay('search_message');">
+            <span class="glyphicon glyphicon-search"></span> Search
+          </a>
+        </li>
+        <li role="menuitem">
+          <a ui-sref="settings()">
+            <span class="glyphicon glyphicon-cog"></span> Settings
+          </a>
+        </li>
+        <li role="menuitem">
+          <a ng-click="logout()">
+            <span class="glyphicon glyphicon-off"></span> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+  </div>
+  <div class="col-md-9 col-lg-9 hidden-xs hidden-sm main">
+    Settings
+  </div>
+</div>
 
-<div class="content-container">
-  
-  <div class="row" class="settings">
-    <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
-      <h1>
-        <span class="glyphicon glyphicon-wrench"></span> Settings
-      </h1>
+
+
+
+<div class="row settings">
+  <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+    
+    <div class="row setting">
       
-      <div class="row setting">
-        
-        <!-- Your Account -->
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <h2>
-            <span class="glyphicon glyphicon-user"></span>Your Account (Not editable)
-          </h2>
+      <!-- Your Account -->
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-user"></span>Your Account (Not editable)
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
           <form>
-            
             <label>Full name</label>
+            <br/>
             <input disabled type="text" name="full_name" ng-model="user.full_name" />
               
             <br/>
             
             <label>Password</label>
+            <br/>
             <input disabled type="button" value="Change Password"></input>
             
             <br/>
             
             <button disabled ng-click="saveUser();">Save changes</button>
           </form>
-          
         </div>
-        
       </div>
-      <div class="row setting">
-        
-        <!-- Display Settings -->
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <h2>
-            <span class="glyphicon glyphicon-time"></span> Display Settings (Not editable)
-          </h2>
+      
+    </div>
+    <div class="row setting">
+      
+      <!-- Display Settings -->
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-time"></span> Display Settings (Not editable)
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
           <input disabled type="checkbox" ng-checked="zulipData.left_side_userlist"/><label>Display user list on side in narrow windows.</label>
           <br/>
           <input disabled type="checkbox" ng-checked="zulipData.twenty_four_hour_time"/><label>Display time in 24-hour format (17:00 instead of 5:00 PM)</label>
         </div>
-        
       </div>
-      <div class="row setting">
-        
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <h2>
-            <span class="glyphicon glyphicon-warning-sign"></span> Notifications (Not editable only SenderID for Android Notifications)
-          </h2>
+      
+    </div>
+    <div class="row setting">
+      
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-warning-sign"></span> Notifications (Not editable only SenderID for Android Notifications)
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
           You'll receive notifications when a message arrives and Zulip isn't in focus or the message is offscreen.
           <br/>
           
-          <h3>
+          <div class="subtitle">
             Stream messages
-          </h3>
+          </div>
           Unless I say otherwise for a particular stream, I want:
           <br/>
           <input disabled type="checkbox"/><label>Desktop notifications</label>
@@ -71,10 +119,11 @@
           <input disabled type="checkbox"/><label>Audible notifications</label>
           <br/>
           Change notification settings for individual streams on your <a>Streams page</a>.
-          
-          <h3>
+
+          <div class="subtitle">
             Private messages and @-mentions
-          </h3>
+          </div>
+          
           I want:
           <br/>
           <input disabled type="checkbox"/><label>Desktop notifications</label>
@@ -90,9 +139,10 @@
           <br/>
           <input type="text" ng-model="sender_id" placeholder="Sender-ID" />
           
-          <h3>
+          
+          <div class="subtitle">
             Other notifications
-          </h3>
+          </div>
           I want:
           <br/>
           <input disabled type="checkbox"/><label>Digest emails when i'm away</label>
@@ -101,16 +151,18 @@
           <br/>
           <button ng-click="save()"><span class="glyphicon glyphicon-ok"></span>Save</button>
         </div>
-        
       </div>
-      <div class="row setting">
-        
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <h2>
-            <span class="glyphicon glyphicon-pawn"></span> Your Bots  (Avatar upload missing)
-          </h2>
+      
+    </div>
+    <div class="row setting">
+      
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-pawn"></span> Your Bots  (Avatar upload missing)
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
           Looking for our <a href="https://zulip.web-mi.de/integrations">Integrations</a> or <a href="https://zulip.web-mi.de/api">API</a> documentation?
           
           <div class="jumbotron" ng-repeat="bot in zulipData.realm_bots track by $index">
@@ -151,7 +203,7 @@
               </div>
             </div>
           </div>
-          
+        
           <div class="jumbotron">
             <form>
               Add a New Bot
@@ -175,21 +227,23 @@
           <br/>
           <button disabled>Show/change your API key</button>
         </div>
-
       </div>
-      <div class="row setting">
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <h2>
-            <span class="glyphicon glyphicon-book"></span> Custom Alert Words
-          </h2>
+    </div>
+    <div class="row setting">
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-book"></span> Custom Alert Words
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
           <div class="alert_words">
             <span class="label label-default"
-                 ng-repeat="alert_word in zulipData.alert_words">
-               {{alert_word}} <span class="glyphicon glyphicon-trash" ng-click="removeAlertWord(alert_word)"></span>
-             </span>
+                  ng-repeat="alert_word in zulipData.alert_words">
+                {{alert_word}} <span class="glyphicon glyphicon-trash" ng-click="removeAlertWord(alert_word)"></span>
+              </span>
           </div>
           
           <br/>
@@ -197,16 +251,18 @@
           <input type="text" placeholder="Alert Word" ng-model="new_alert_word"/>
           <button ng-click="addAlertWord()">Add</button>
         </div>
-        
       </div>
-      <div class="row setting">
-        
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <h2>
-            <span class="glyphicon glyphicon-alert"></span>Zulip Labs (Not editable)
-          </h2>
+      
+    </div>
+    <div class="row setting">
+      
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="title">
+          <span class="glyphicon glyphicon-alert"></span>Zulip Labs (Not editable)
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
+        <div class="content">
           Warning: the below features are experimental features and may not work as well as you would like.
           <br/>
           <input disabled type="checkbox"/><label>Always auto-scroll to new messages</label>
@@ -216,11 +272,11 @@
           <button disabled>Save changes</button>
         </div>
       </div>
-      
     </div>
-  
-  
-    
     
   </div>
 </div>
+
+<ng-include src="'partials/_private_message.html'"></ng-include>
+<ng-include src="'partials/_stream_message.html'"></ng-include>
+<ng-include src="'partials/_search_message.html'"></ng-include>
