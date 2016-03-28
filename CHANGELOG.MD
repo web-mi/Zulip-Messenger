@@ -1,3 +1,12 @@
+## 0.0.3 (2016-03-28)
+
+Features:
+  - changed to new layout
+  
+Bugfixes:
+  - fixed missing names on messages
+  - more
+
 ## 0.0.2 (2016-03-16)
 
 Features:
